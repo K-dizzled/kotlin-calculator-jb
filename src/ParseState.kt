@@ -62,18 +62,3 @@ fun toStr(state: ParseState): String = when (state) {
     is ParseState.LeftBracket -> "("
     is ParseState.RightBracket -> ")"
 }
-
-sealed interface ASTState {
-    data class Number(val value: Int) : ASTState
-    data class Operator(val value: ArithmeticCommand) : ASTState
-}
-
-fun asToStr(state: ASTState): String = when (state) {
-    is ASTState.Number -> state.value.toString()
-    is ASTState.Operator -> when (state.value) {
-        ArithmeticCommand.PLUS -> "+"
-        ArithmeticCommand.MINUS -> "-"
-        ArithmeticCommand.MULTIPLY -> "*"
-        ArithmeticCommand.DIVISION -> "/"
-    }
-}
