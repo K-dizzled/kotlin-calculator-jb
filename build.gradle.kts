@@ -10,6 +10,7 @@ buildscript {
 plugins {
     kotlin("jvm") version "1.7.10"
     java
+    application
 }
 
 tasks {
@@ -41,4 +42,8 @@ sourceSets.main {
 
 sourceSets.test {
     java.srcDir("test")
+}
+
+application {
+    mainClass.set("mpp.calculator.CLICalc")
 }
