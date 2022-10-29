@@ -1,51 +1,35 @@
 package mpp.calculator
 
 class ExpressionParser {
-    var registers: MutableMap<String, Int> = mutableMapOf()
-
-    fun tokenize(expression: String): MutableList<String> {
-        val tokens = mutableListOf<String>()
-        val specialSymbols = listOf("+", "-", "*", "/", "(", ")")
-        var currentToken = ""
-        for (char in expression) {
-            when {
-                char.isWhitespace() -> {
-                    if (currentToken.isNotEmpty()) {
-                        tokens.add(currentToken)
-                        currentToken = ""
+    companion object {
+        fun tokenize(expression: String): MutableList<String> {
+            val tokens = mutableListOf<String>()
+            val specialSymbols = listOf("+", "-", "*", "/", "(", ")")
+            var currentToken = ""
+            for (char in expression) {
+                when {
+                    char.isWhitespace() -> {
+                        if (currentToken.isNotEmpty()) {
+                            tokens.add(currentToken)
+                            currentToken = ""
+                        }
                     }
-                }
-                specialSymbols.contains(char.toString()) -> {
-                    if (currentToken.isNotEmpty()) {
-                        tokens.add(currentToken)
-                        currentToken = ""
+                    specialSymbols.contains(char.toString()) -> {
+                        if (currentToken.isNotEmpty()) {
+                            tokens.add(currentToken)
+                            currentToken = ""
+                        }
+                        tokens.add(char.toString())
                     }
-                    tokens.add(char.toString())
-                }
-                else -> {
-                    currentToken += char
+                    else -> {
+                        currentToken += char
+                    }
                 }
             }
-        }
-        if (currentToken.isNotEmpty()) {
-            tokens.add(currentToken)
-        }
-        return tokens
-    }
-
-    fun evaluateLine(str: String): Int? {
-        var tokens = tokenize(str)
-        return if (tokens.size >= 3 && tokens[0] == "let" && tokens[2] == "=") {
-            val variable = tokens[1]
-            tokens = tokens.drop(3).toMutableList()
-
-            val root = parseExpression(tokens)
-            registers[variable] = ParseTree(root, registers).evaluate()
-
-            null
-        } else {
-            val root = parseExpression(tokens)
-            ParseTree(root, registers).evaluate()
+            if (currentToken.isNotEmpty()) {
+                tokens.add(currentToken)
+            }
+            return tokens
         }
     }
 
@@ -64,7 +48,7 @@ class ExpressionParser {
         tokens.removeAt(0)
     }
 
-    private fun parseExpression(tokens: MutableList<String>): ParseNode {
+    fun parseExpression(tokens: MutableList<String>): ParseNode {
         val node = ParseNode(ParseState.Expression)
         node.children.add(parseTerm(tokens))
 

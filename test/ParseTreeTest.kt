@@ -12,20 +12,19 @@ class CLICalcTest {
 
     @Test
     fun testTokenize() {
-        val parser = ExpressionParser()
-        val tokens = parser.tokenize("1+2")
+        val tokens = ExpressionParser.tokenize("1+2")
         assertEquals(listOf("1", "+", "2"), tokens)
 
-        val tokens2 = parser.tokenize("1+2*3")
+        val tokens2 = ExpressionParser.tokenize("1+2*3")
         assertEquals(listOf("1", "+", "2", "*", "3"), tokens2)
 
-        val tokens3 = parser.tokenize("1 + 2 * 3 + 4")
+        val tokens3 = ExpressionParser.tokenize("1 + 2 * 3 + 4")
         assertEquals(listOf("1", "+", "2", "*", "3", "+", "4"), tokens3)
 
-        val tokens4 = parser.tokenize("(1+2)*3 +4 *(5)+7")
+        val tokens4 = ExpressionParser.tokenize("(1+2)*3 +4 *(5)+7")
         assertEquals(listOf("(", "1", "+", "2", ")", "*", "3", "+", "4", "*", "(", "5", ")", "+", "7"), tokens4)
 
-        val tokens5 = parser.tokenize("y_10_x + 2 * (xxx_ + 4) * 5 + !228")
+        val tokens5 = ExpressionParser.tokenize("y_10_x + 2 * (xxx_ + 4) * 5 + !228")
         assertEquals(listOf("y_10_x", "+", "2", "*", "(", "xxx_", "+", "4", ")", "*", "5", "+", "!228"), tokens5)
     }
 
@@ -78,24 +77,24 @@ class CLICalcTest {
 
     @Test
     fun testPerformance() {
-        val parser = ExpressionParser()
+        val evaluator = Evaluator()
 
-        var ans = parser.evaluateLine("42")
+        var ans = evaluator.evaluateLine("42")
         assertEquals(42, ans)
 
-        ans = parser.evaluateLine("10 * (5 + 7)")
+        ans = evaluator.evaluateLine("10 * (5 + 7)")
         assertEquals(120, ans)
 
-        ans = parser.evaluateLine("let x = 2 * 7")
+        ans = evaluator.evaluateLine("let x = 2 * 7")
         assertEquals(null, ans)
 
-        ans = parser.evaluateLine("x + 1")
+        ans = evaluator.evaluateLine("x + 1")
         assertEquals(15, ans)
 
-        ans = parser.evaluateLine("let x = x / 5")
+        ans = evaluator.evaluateLine("let x = x / 5")
         assertEquals(null, ans)
 
-        ans = parser.evaluateLine("x")
+        ans = evaluator.evaluateLine("x")
         assertEquals(2, ans)
     }
 }

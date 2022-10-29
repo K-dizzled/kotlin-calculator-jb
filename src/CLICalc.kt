@@ -4,7 +4,7 @@ class CLICalc {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val parser = ExpressionParser()
+            val evaluator = Evaluator()
             while (true) {
                 print(">>> ")
                 val input = readLine() ?: break
@@ -12,7 +12,7 @@ class CLICalc {
                     break
                 }
                 try {
-                    val eval = parser.evaluateLine("42")
+                    val eval = evaluator.evaluateLine("42")
                     println(eval)
                 } catch (e: Exception) {
                     println(e.message)
